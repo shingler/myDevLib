@@ -1,0 +1,6 @@
+#!/bin/sh
+install -m 0777 -d /opt/storage_v16/webroot/
+install -m 0777 -d /opt/storage_client/
+install -m 0777 -p crop_picture.php /opt/storage_v16/webroot/
+php storage_v16.php
+service httpd restart

@@ -1,0 +1,30 @@
+%s
+NameVirtualHost *:%d
+#
+# VirtualHost example:
+# Almost any Apache directive may go into a VirtualHost container.
+# The first VirtualHost section is used for requests without a known
+# server name.
+#
+<VirtualHost *:%d>
+    ServerAdmin webmaster@dummy-host.example.com
+    DocumentRoot /opt/storage_client
+    ServerName video.%s 
+    ServerAlias media.%s
+    
+    RewriteEngine On
+
+    #RewriteRule ^/([^/]+/.*\.jpg|png|jpeg|bmp)_(\d+).jpg$  /crop_picture.php?size_w=$2&size_h=$2&filepath=$1 [QSA,L]
+    RewriteRule ^/([^/]+/.*\.)(jpg|png|jpeg|bmp|gif)_(\d+)_(\d+).jpg$    /opt/storage_v16/webroot/crop_picture.php?size_w=$3&size_h=$4&filepath=$1$2 [QSA,L]
+    #RewriteRule ^/([^/]+/.*\.jpg)x(\d+).jpg$  /crop_picture.php?size_w=$2&size_h=$2&filepath=$1&scale=1 [QSA,L]
+    RewriteRule ^/([^/]+/.*\.)(jpg|png|jpeg|bmp|gif)x(\d+)_(\d+).jpg$    /opt/storage_v16/webroot/crop_picture.php?size_w=$3&size_h=$4&filepath=$1$2&scale=1 [QSA,L]
+    RewriteRule ^/([^/]+/.*\.)(jpg|png|jpeg|bmp|gif)x(\d+)_(\d+).jpg\?refresh$    /opt/storage_v16/webroot/crop_picture.php?size_w=$3&size_h=$4&filepath=$1$2&scale=1&refresh=1 [QSA,L]
+    #RewriteRule ^/([^/]+)/(.*\.mp4)\.m3u8 /mp4tom3u8.php?url=$1 last;
+    RewriteRule ^/([^/]+/.*\.)([^/]*).download$    /opt/storage_v16/webroot/download.php?filepath=$1&ext=$2 [QSA,L]
+    RewriteRule ^/([^/]+/.*\.)(jpg|png|jpeg|bmp|gif)x(\d+)_(\d+).jpg$    /opt/storage_v16/webroot/refresh.php?size_w=$3&size_h=$4&filepath=$1$2&scale=1 [QSA,L]
+    #RewriteRule ^/([^/]+)/([^/]+)$ /opt/storage_client/$1/$2 [L]
+
+
+    ErrorLog logs/v15storage-error_log
+    CustomLog logs/v15storage-access_log common
+</VirtualHost>
